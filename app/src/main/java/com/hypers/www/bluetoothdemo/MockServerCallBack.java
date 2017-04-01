@@ -50,8 +50,9 @@ public class MockServerCallBack extends BluetoothGattServerCallback {
                     BluetoothGattCharacteristic.PERMISSION_READ | BluetoothGattCharacteristic.PERMISSION_WRITE);
             alc.setValue("");
             ias.addCharacteristic(alc);
-            if (mGattServer != null && ias != null)
+            if (mGattServer != null && ias != null) {
                 mGattServer.addService(ias);
+            }
         }
     }
 
