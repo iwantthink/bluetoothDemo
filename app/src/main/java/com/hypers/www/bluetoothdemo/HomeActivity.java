@@ -15,6 +15,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.ParcelUuid;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -40,18 +41,38 @@ public class HomeActivity extends AppCompatActivity {
     private Activity mActivity = this;
     private MockServerCallBack mMockServerCallBack;
     private BluetoothGattServer mGattServer;
+    private BluetoothLeAdvertiser mBluetoothAdvertiser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         mBtnOpen = (Button) findViewById(R.id.btn_open);
+
+        boolean supportBLE = checkSupportBLE();
+        if (supportBLE) {
+
+            mBluetoothManager =
+                    (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+            mBluetoothAdapter = mBluetoothManager.getAdapter();
+            //俩种获取bluetoothAdapter 的方式
+//            BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+            if (null == mBluetoothAdapter) {
+                Toast.makeText(this, "not support bluetooth", Toast.LENGTH_SHORT).show();
+            } else if (!mBluetoothAdapter.isEnabled()) {
+                //开启蓝牙
+                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BLE);
+            }
+        }
+
         mBtnOpen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                BluetoothLeAdvertiser listener = mBluetoothAdapter.getBluetoothLeAdvertiser();
-                if (null == listener) {
+                //getBluetoothAdvertiser也是会调用下面的方法去判断是否支持ble
+//                boolean isSupported = mBluetoothAdapter.isMultipleAdvertisementSupported();
+                mBluetoothAdvertiser = mBluetoothAdapter.getBluetoothLeAdvertiser();
+                if (null == mBluetoothAdvertiser) {
                     Toast.makeText(HomeActivity.this, "not support bluetoothle", Toast.LENGTH_SHORT).show();
                 } else {
                     mMockServerCallBack = new MockServerCallBack();
@@ -63,27 +84,16 @@ public class HomeActivity extends AppCompatActivity {
                     try {
                         mMockServerCallBack.setupServices(mGattServer);
                         //创建BLE Adevertising并且广播
-                        listener.startAdvertising(createAdvSettings(true, 0), createFMPAdvertiseData(), mAdvCallback);
+                        mBluetoothAdvertiser.startAdvertising(createAdvSettings(true, 0),
+                                createFMPAdvertiseData(),
+                                mAdvCallback);
                     } catch (InterruptedException e) {
                         Log.v(TAG, "Fail to setup BleService");
                     }
                 }
             }
         });
-        boolean supportBLE = checkSupportBLE();
-        if (supportBLE) {
 
-            mBluetoothManager =
-                    (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-            mBluetoothAdapter = mBluetoothManager.getAdapter();
-//            BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
-            if (null == mBluetoothAdapter) {
-                Toast.makeText(this, "not support bluetooth_le", Toast.LENGTH_SHORT).show();
-            } else if (!mBluetoothAdapter.isEnabled()) {
-                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BLE);
-            }
-        }
     }
 
     public static AdvertiseSettings createAdvSettings(boolean connectable, int timeoutMillis) {
@@ -100,6 +110,7 @@ public class HomeActivity extends AppCompatActivity {
     public static AdvertiseData createFMPAdvertiseData() {
         AdvertiseData.Builder builder = new AdvertiseData.Builder();
         builder.setIncludeDeviceName(true);
+        builder.addServiceUuid(ParcelUuid.fromString("0000fff2-0000-1000-8000-00805f9b34fb"));
         AdvertiseData adv = builder.build();
         return adv;
     }
@@ -108,6 +119,7 @@ public class HomeActivity extends AppCompatActivity {
     private AdvertiseCallback mAdvCallback = new AdvertiseCallback() {
         public void onStartSuccess(android.bluetooth.le.AdvertiseSettings settingsInEffect) {
             if (settingsInEffect != null) {
+                Toast.makeText(mActivity, "start success", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "onStartSuccess TxPowerLv=" + settingsInEffect.getTxPowerLevel() + " mode=" + settingsInEffect.getMode() + " timeout=" + settingsInEffect.getTimeout());
             } else {
                 Log.d(TAG, "onStartSuccess, settingInEffect is null");
@@ -115,10 +127,27 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         public void onStartFailure(int errorCode) {
+            Toast.makeText(mActivity, "start failure", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "onStartFailure errorCode=" + errorCode);
-        }
+            switch (errorCode) {
 
-        ;
+                case 1:
+                    Log.d(TAG, "errorCode1 ADVERTISE_FAILED_DATA_TOO_LARGE");
+                    break;
+                case 2:
+                    Log.d(TAG, "errorCode2 ADVERTISE_FAILED_TOO_MANY_ADVERTISERS");
+                    break;
+                case 3:
+                    Log.d(TAG, "errorCode3 ADVERTISE_FAILED_ALREADY_STARTED");
+                    break;
+                case 4:
+                    Log.d(TAG, "errorCode4 ADVERTISE_FAILED_INTERNAL_ERROR");
+                    break;
+                case 5:
+                    Log.d(TAG, "errorCode5 ADVERTISE_FAILED_FEATURE_UNSUPPORTED");
+                    break;
+            }
+        }
     };
 
 
@@ -131,29 +160,6 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    private boolean mScanning = false;
-    private int SCAN_PERIOD = 10000;
-
-
-    private void scanLeDevice(final boolean enable) {
-
-
-        if (enable) {
-            // Stops scanning after a pre-defined scan period.
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mScanning = false;
-                    mBluetoothAdapter.stopLeScan(mLeScanCallback);
-                }
-            }, SCAN_PERIOD); //10秒后停止搜索
-            mScanning = true;
-            mBluetoothAdapter.startLeScan(mLeScanCallback); //开始搜索
-        } else {
-            mScanning = false;
-            mBluetoothAdapter.stopLeScan(mLeScanCallback);//停止搜索
-        }
-    }
 
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
@@ -185,5 +191,22 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //关闭BluetoothLeAdvertiser，BluetoothAdapter，BluetoothGattServer
+        if (mBluetoothAdvertiser != null) {
+            mBluetoothAdvertiser.stopAdvertising(mAdvCallback);
+            mBluetoothAdvertiser = null;
+        }
 
+        if (mBluetoothAdapter != null) {
+            mBluetoothAdapter = null;
+        }
+
+        if (mGattServer != null) {
+            mGattServer.clearServices();
+            mGattServer.close();
+        }
+    }
 }

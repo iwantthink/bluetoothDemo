@@ -29,7 +29,7 @@ public class MockServerCallBack extends BluetoothGattServerCallback {
     private BluetoothGattCharacteristic mManufacturerNameChar;
     private BluetoothGattCharacteristic mModuleNumberChar;
     private BluetoothGattCharacteristic mSerialNumberChar;
-    private UUID mUUID = UUID.fromString("D0611E78-BBB4-4591-A5F8-487910AE4366");
+    private UUID mUUID = UUID.fromString("0000fff2-0000-1000-8000-00805f9b34fb");
 
     public void setupServices(BluetoothGattServer gattServer) throws InterruptedException {
 
