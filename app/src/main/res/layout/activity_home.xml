@@ -11,11 +11,29 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.hypers.www.bluetoothdemo.HomeActivity">
 
-    <Button
-        android:id="@+id/btn_open"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="打开蓝牙"
-        />
+        android:orientation="horizontal"
+        android:gravity="center"
+        >
+
+        <TextView
+            android:id="@+id/tv_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="蓝牙外设服务已关闭"
+            />
+
+        <Switch
+            android:id="@+id/switch_ble"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:switchMinWidth="80dp"
+            />
+
+    </LinearLayout>
 
 </RelativeLayout>
