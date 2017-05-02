@@ -7,7 +7,7 @@
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"
-        android:required="false"></uses-feature>
+        android:required="false"/>
 
     <application
         android:allowBackup="true"
@@ -21,6 +21,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity android:name=".login.v.LoginActivity">
         </activity>
     </application>
 

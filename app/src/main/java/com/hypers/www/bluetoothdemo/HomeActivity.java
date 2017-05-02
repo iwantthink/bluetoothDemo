@@ -65,7 +65,7 @@ public class HomeActivity extends AppCompatActivity {
             //俩种获取bluetoothAdapter 的方式
 //            BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
             if (null == mBluetoothAdapter) {
-                Toast.makeText(this, "not support bluetooth", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "请打开蓝牙功能", Toast.LENGTH_SHORT).show();
             } else if (null != mBluetoothAdapter && !mBluetoothAdapter.isEnabled()) {
                 //开启蓝牙
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -74,6 +74,8 @@ public class HomeActivity extends AppCompatActivity {
                 switchTrue();
                 openBle();
             }
+        } else {
+            Toast.makeText(mActivity, "设置不支持BLE", Toast.LENGTH_SHORT).show();
         }
     }
 
