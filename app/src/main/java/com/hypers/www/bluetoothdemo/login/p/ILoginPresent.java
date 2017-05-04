@@ -7,4 +7,5 @@ package com.hypers.www.bluetoothdemo.login.p;
 public interface ILoginPresent {
 
     void login(String account, String password);
+
 }
