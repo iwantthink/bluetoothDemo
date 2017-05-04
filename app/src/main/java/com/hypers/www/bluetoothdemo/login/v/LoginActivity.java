@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.hypers.www.bluetoothdemo.R;
+import com.hypers.www.bluetoothdemo.registered.RegisteredActivity;
 
 public class LoginActivity extends AppCompatActivity implements ILoginView {
 
@@ -22,6 +23,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
 
+        RegisteredActivity.start(this);
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 //
 //        }
