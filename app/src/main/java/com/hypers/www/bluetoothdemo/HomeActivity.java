@@ -16,16 +16,19 @@ import android.os.ParcelUuid;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.CompoundButton;
-import android.widget.Switch;
-import android.widget.TextView;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.hmt.analytics.viewexplosion.ExplosionView;
+import com.hmt.analytics.viewexplosion.factory.FlyawayFactory;
+import com.plattysoft.leonids.ParticleSystem;
 
 public class HomeActivity extends AppCompatActivity {
 
     public static final int REQUEST_ENABLE_BLE = 111;
     public static final String BLE_SERVICE_CLOSED = "蓝牙外设服务已关闭";
-    private Switch mSwitchBle;
     private static final String TAG = HomeActivity.class.getSimpleName();
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothManager mBluetoothManager;
@@ -33,25 +36,50 @@ public class HomeActivity extends AppCompatActivity {
     private MockServerCallBack mMockServerCallBack;
     private BluetoothGattServer mGattServer;
     private BluetoothLeAdvertiser mBluetoothAdvertiser;
-    private TextView mTvBleState;
+    private ImageView mIvAvatar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        mSwitchBle = (Switch) findViewById(R.id.switch_ble);
-        mTvBleState = (TextView) findViewById(R.id.tv_state);
-        initBle();
-        mSwitchBle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+
+        final ExplosionView explosionView = new ExplosionView(this, new FlyawayFactory());
+        explosionView.setHideStatusBar(true);
+        mIvAvatar = (ImageView) findViewById(R.id.iv_avatar);
+//        explosionView.setSrc(R.mipmap.logo_pink);
+
+        final ParticleSystem system = new ParticleSystem(HomeActivity.this, 50, R.mipmap.share, 1000, R.id.activity_home)
+                .setSpeedRange(0.1f, 0.25f);
+
+        mIvAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    openBle();
+            public void onClick(View v) {
+                if (explosionView.getMode() == ExplosionView.MODE.ANNULUS) {
+                    explosionView.setMode(ExplosionView.MODE.EXPLOSION);
                 } else {
-                    closeBle();
+                    explosionView.setMode(ExplosionView.MODE.ANNULUS);
                 }
+                explosionView.explode(v);
+
+//                system.emit(v, 100);
             }
         });
+
+
+//        mTvBleState = (TextView) findViewById(R.id.tv_state);
+//        initBle();
+//        mSwitchBle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if (isChecked) {
+//                    openBle();
+//                } else {
+//                    closeBle();
+//                }
+//            }
+//        });
 
     }
 
@@ -182,19 +210,16 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void switchTrue() {
-        mSwitchBle.setChecked(true);
-        mTvBleState.setText("蓝牙外设服务已开启");
+
     }
 
     private void switchFalse() {
-        mSwitchBle.setChecked(false);
-        mTvBleState.setText(BLE_SERVICE_CLOSED);
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mSwitchBle.setChecked(false);
     }
 
     private void closeBle() {

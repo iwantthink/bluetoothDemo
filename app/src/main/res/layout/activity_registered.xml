@@ -249,7 +249,8 @@
             android:layout_height="80dp"
             app:riv_corner_radius="40dp"
             android:layout_centerInParent="true"
-            android:src="@mipmap/ic_launcher"
+            android:background="@mipmap/ic_launcher"
+            android:elevation="2dp"
             />
 
         <ImageView
@@ -260,6 +261,7 @@
             android:layout_marginBottom="18dp"
             android:layout_marginRight="18dp"
             android:src="@mipmap/camera"
+            android:elevation="3dp"
             />
 
     </RelativeLayout>
@@ -277,7 +279,10 @@
         android:id="@+id/rl_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="14dp"
+        android:paddingLeft="14dp"
+        android:paddingTop="14dp"
+        android:paddingRight="25dp"
+        android:paddingBottom="25dp"
         >
 
         <ImageView

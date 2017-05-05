@@ -3,7 +3,7 @@ package com.hmt.analytics.viewexplosion.factory;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 
-import com.example.administrator.viewexplosion.particle.Particle;
+import com.hmt.analytics.viewexplosion.particle.Particle;
 
 
 /**

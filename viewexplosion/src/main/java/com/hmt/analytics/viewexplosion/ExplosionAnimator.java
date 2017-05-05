@@ -7,8 +7,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.View;
 
-import com.example.administrator.viewexplosion.factory.ParticleFactory;
-import com.example.administrator.viewexplosion.particle.Particle;
+import com.hmt.analytics.viewexplosion.factory.ParticleFactory;
+import com.hmt.analytics.viewexplosion.particle.Particle;
 
 
 /**

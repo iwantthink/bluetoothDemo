@@ -5,8 +5,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
-import com.example.administrator.viewexplosion.Utils;
-import com.example.administrator.viewexplosion.factory.FlyawayFactory;
+import com.hmt.analytics.viewexplosion.Utils;
+import com.hmt.analytics.viewexplosion.factory.FlyawayFactory;
 
 import java.util.Random;
 
@@ -54,10 +54,9 @@ public class FlyawayParticle extends Particle {
         mCenterX = bound.centerX();
         mCenterY = bound.centerY();
         mRandomAngle = randomAngle;
-        mMaxRadius = mBound.width() > mBound.height() ? mBound.height() : mBound.width();
+        mMaxRadius = mBound.width() / 10 * 13;
         mAlpha = mRandom.nextFloat();
         mStartShowRadius = mBound.width() > mBound.height() ? mBound.height() / 2 : mBound.width() / 2;
-
 //        Log.d("FlyawayParticle", "x:" + x);
 //        Log.d("FlyawayParticle", "y:" + y);
 //        Log.d("FlyawayParticle", "mRadius:" + mRadius);
@@ -79,28 +78,29 @@ public class FlyawayParticle extends Particle {
         paint.setAlpha((int) (Color.alpha(color) * mAlpha)); //这样透明颜色就不是黑色了
         canvas.save();
         canvas.translate(mCenterX, mCenterY);
-
         paint.setStyle(Paint.Style.FILL);
-        if (mRandomAngle < 90 && mRandomAngle > 0) {
-            paint.setColor(Color.RED);
-        } else if (mRandomAngle < 180 && mRandomAngle >= 90) {
-            paint.setColor(Color.GREEN);
-        } else if (mRandomAngle < 270 && mRandomAngle >= 180) {
-            paint.setColor(Color.BLUE);
-        } else {
-            paint.setColor(Color.BLACK);
-        }
+//        paint.setColor(Color.WHITE);
+//        if (mRandomAngle < 90 && mRandomAngle > 0) {
+//            paint.setColor(Color.RED);
+//        } else if (mRandomAngle < 180 && mRandomAngle >= 90) {
+//            paint.setColor(Color.GREEN);
+//        } else if (mRandomAngle < 270 && mRandomAngle >= 180) {
+//            paint.setColor(Color.BLUE);
+//        } else {
+//            paint.setColor(Color.BLACK);
+//        }
 //        if (mOuterRadius < mBound.width() / 2 || mOuterRadius >= mMaxRadius - mMaxRadius / 10) {
 //            paint.setColor(Color.TRANSPARENT);
 //        }
-
+        paint.setAlpha(255);
         canvas.drawCircle(cx, cy, mRadius, paint);
-        paint.setColor(Color.GRAY);
-        canvas.drawCircle(0, 0, mRadius, paint);
-        paint.setStyle(Paint.Style.STROKE);
-        canvas.drawCircle(0, 0, mMaxRadius, paint);
-        paint.setColor(Color.BLUE);
-        canvas.drawCircle(0, 0, mStartShowRadius, paint);
+
+//        paint.setColor(Color.GRAY);
+//        canvas.drawCircle(0, 0, mRadius, paint);
+//        paint.setStyle(Paint.Style.STROKE);
+//        canvas.drawCircle(0, 0, mMaxRadius, paint);
+//        paint.setColor(Color.BLUE);
+//        canvas.drawCircle(0, 0, mStartShowRadius, paint);
         canvas.restore();
     }
 
@@ -117,12 +117,6 @@ public class FlyawayParticle extends Particle {
             moveSpeed = 0.5f;
         }
         mOuterRadius += moveSpeed;
-
-//        Log.d("FlyawayParticle", "mOuterRadius / mMaxRadius:" + (mOuterRadius / mMaxRadius));
-//        Log.d("FlyawayParticle", "mOuterRadius1:" + mOuterRadius);
-//        Log.d("FlyawayParticle", "mOuterRadius2:" + dd);
-
-
         //控制显示区域
         if (mOuterRadius > mMaxRadius) {
             mOuterRadius = mStartRadius;

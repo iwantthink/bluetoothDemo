@@ -6,8 +6,8 @@ import android.graphics.Rect;
 import android.util.Log;
 import android.view.animation.DecelerateInterpolator;
 
-import com.example.administrator.viewexplosion.particle.FlyawayParticle;
-import com.example.administrator.viewexplosion.particle.Particle;
+import com.hmt.analytics.viewexplosion.particle.FlyawayParticle;
+import com.hmt.analytics.viewexplosion.particle.Particle;
 
 import java.util.Random;
 
@@ -39,7 +39,7 @@ public class FlyawayFactory extends ParticleFactory {
         Log.d("FlyawayFactory", "partW_Count:" + partW_Count);
 //        int bitmap_part_w = bitmap.getWidth() / partW_Count;
 //        int bitmap_part_h = bitmap.getHeight() / partH_Count;
-        int color = Color.argb(255, 0, 0, 0);
+        int color = Color.rgb(255, 255, 255);
         Particle[][] particles = new Particle[partH_Count][partW_Count];
 
 //        for (int i = 0; i < 1; i++) {

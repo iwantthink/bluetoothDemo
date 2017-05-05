@@ -18,7 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
-import com.example.administrator.viewexplosion.factory.ParticleFactory;
+import com.hmt.analytics.viewexplosion.factory.ParticleFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,11 +64,11 @@ public class ExplosionView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-//        if (mMode == MODE.ANNULUS) {
-//            drawAnnulus(canvas);
-//        } else {
-//            drawPoint(canvas);
-//        }
+        if (mMode == MODE.ANNULUS) {
+            drawAnnulus(canvas);
+        } else {
+            drawPoint(canvas);
+        }
         drawBitmap(canvas);
         drawLine(canvas);
     }
@@ -79,9 +79,9 @@ public class ExplosionView extends View {
             canvas.save();
             canvas.translate(mRect.centerX(), mRect.centerY());
             mPaint.setStyle(Paint.Style.FILL);
-            mPaint.setColor(Color.BLUE);
+            mPaint.setColor(Color.WHITE);
             for (float annulusRadius : mAnnulusRadius) {
-                float percent = 1 - annulusRadius / ((float) mRect.width() / 4 * 3);
+                float percent = 1 - annulusRadius / mRect.width();
                 mPaint.setAlpha((int) (percent * 255));
                 canvas.drawCircle(0, 0, annulusRadius, mPaint);
             }
@@ -96,7 +96,7 @@ public class ExplosionView extends View {
         for (int i = 0; i < mAnnulusRadius.size(); i++) {
             float radius = mAnnulusRadius.get(i) + mAnnulusSpeed;
             mAnnulusRadius.set(i, radius);
-            if (radius > mRect.width() / 4 * 3) {
+            if (radius > mRect.width()) {
                 mAnnulusRadius.remove(i);
             }
         }
@@ -112,16 +112,18 @@ public class ExplosionView extends View {
             canvas.translate(mRect.centerX(), mRect.centerY());
             mPaint.setStyle(Paint.Style.STROKE);
             mPaint.setStrokeWidth(Utils.dp2Px(2));
-            LinearGradient linearGradient =
-                    new LinearGradient(0, -mRect.width() + mRect.width() / 8,
-                            0, -mRect.width() - 100,
-                            Color.TRANSPARENT, Color.BLACK, Shader.TileMode.REPEAT);
-            mPaint.setShader(linearGradient);
+            LinearGradient linearGradient;
             mPaint.setColor(Color.RED);
-            for (int i = 0; i < 36; i++) {
-                canvas.rotate(10);
-                canvas.drawLine(0, -mRect.width() + mRect.width() / 8,
-                        0, mOuterLineLth[i], mPaint);
+            float temp = -mRect.width() / 10 * 13;
+
+            for (int i = 0; i < 33; i++) {
+                canvas.rotate(10.9f);
+                linearGradient = new LinearGradient(0, temp,
+                        0, temp + mOuterLineLth[i],
+                        Color.argb(0, 255, 255, 255), Color.argb(127, 255, 255, 255), Shader.TileMode.CLAMP);
+                mPaint.setShader(linearGradient);
+                canvas.drawLine(0, temp,
+                        0, temp + mOuterLineLth[i], mPaint);
             }
             mPaint.setShader(null);
             canvas.restore();
@@ -154,10 +156,20 @@ public class ExplosionView extends View {
         mMode = mode;
     }
 
+    public MODE getMode() {
+        return mMode;
+    }
+
+    private boolean isHideStatusBar = false;
+
+    public void setHideStatusBar(boolean isHide) {
+        isHideStatusBar = isHide;
+    }
+
     private ArrayList<Float> mAnnulusRadius = new ArrayList<>();
     private Rect mRect;
     private Bitmap mBitmap;
-    private int[] mOuterLineLth = new int[36];
+    private float[] mOuterLineLth = new float[36];
     private float mAnnulusGap = Utils.dp2Px(15);
 
     public void explode(final View view) {
@@ -181,6 +193,9 @@ public class ExplosionView extends View {
         Rect frame = new Rect();
         ((Activity) getContext()).getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
         int statusBarHeight = frame.top;
+        if (isHideStatusBar) {
+            statusBarHeight = 0;
+        }
         mRect.offset(0, -contentTop - statusBarHeight);//去掉状态栏高度和标题栏高度
         if (mRect.width() == 0 || mRect.height() == 0) {
             return;
@@ -191,12 +206,12 @@ public class ExplosionView extends View {
         Log.d(TAG, "mRect.bottom:" + mRect.bottom);
 
         for (int i = 0; i < mOuterLineLth.length; i++) {
-            mOuterLineLth[i] = mRandom.nextInt(Utils.dp2Px(20)) -
-                    mRect.width() - mRect.width() / 3;
+            mOuterLineLth[i] = -mRandom.nextInt(mRect.width() / 3) -
+                    mRect.width() / 3;
         }
 
         if (mRect != null) {
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < mRect.width() / mAnnulusGap; i++) {
                 mAnnulusRadius.add(mAnnulusGap * i);
             }
         }
