@@ -216,6 +216,7 @@ public class ExplosionView extends View {
             }
         }
 
+        view.setVisibility(GONE);
 
         explode(view, mRect);
 

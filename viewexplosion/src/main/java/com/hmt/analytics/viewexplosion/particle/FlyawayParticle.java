@@ -93,7 +93,10 @@ public class FlyawayParticle extends Particle {
 //            paint.setColor(Color.TRANSPARENT);
 //        }
         paint.setAlpha(255);
-        canvas.drawCircle(cx, cy, mRadius, paint);
+        if (mOuterRadius >= mStartShowRadius) {
+            canvas.drawCircle(cx, cy, mRadius, paint);
+        }
+
 
 //        paint.setColor(Color.GRAY);
 //        canvas.drawCircle(0, 0, mRadius, paint);
@@ -111,40 +114,40 @@ public class FlyawayParticle extends Particle {
     protected void caculate(float factor) {
         //控制移动速度
         float moveSpeed = 1 - FlyawayFactory.mInterpolator.getInterpolation(mOuterRadius / mMaxRadius);
-        if (moveSpeed > 0.9f) {
-            moveSpeed = 0.9f;
-        } else if (moveSpeed < 0.5f) {
-            moveSpeed = 0.5f;
+        if (moveSpeed > 0.8f) {
+            moveSpeed = 0.8f;
+        } else if (moveSpeed < 0.4f) {
+            moveSpeed = 0.4f;
         }
+
         mOuterRadius += moveSpeed;
         //控制显示区域
         if (mOuterRadius > mMaxRadius) {
             mOuterRadius = mStartRadius;
-            mMoveSpeed = 0.3f;
         }
 //        Log.d("FlyawayParticle", "Math.sin(mRandomAngle):" + Math.sin(mRandomAngle));
 //        Log.d("FlyawayParticle", "Math.cos(mRandomAngle):" + Math.cos(mRandomAngle));
 
-        if (mOuterRadius >= mStartShowRadius) {
-            cx = (float) (mOuterRadius * Math.sin(mRandomAngle));
-            cy = (float) (mOuterRadius * Math.cos(mRandomAngle));
-            if (mRandomAngle < 90 && mRandomAngle > 0) {
-                cx = Math.abs(cx);
-                cy = Math.abs(cy);
-            } else if (mRandomAngle < 180 && mRandomAngle >= 90) {
-                cx = -Math.abs(cx);
-                cy = Math.abs(cy);
-            } else if (mRandomAngle < 270 && mRandomAngle >= 180) {
-                cx = -Math.abs(cx);
-                cy = -Math.abs(cy);
-            } else {
-                cx = +Math.abs(cx);
-                cy = -Math.abs(cy);
-            }
+//        if (mOuterRadius >= mStartShowRadius) {
+        cx = (float) (mOuterRadius * Math.sin(mRandomAngle));
+        cy = (float) (mOuterRadius * Math.cos(mRandomAngle));
+        if (mRandomAngle < 90 && mRandomAngle > 0) {
+            cx = Math.abs(cx);
+            cy = Math.abs(cy);
+        } else if (mRandomAngle < 180 && mRandomAngle >= 90) {
+            cx = -Math.abs(cx);
+            cy = Math.abs(cy);
+        } else if (mRandomAngle < 270 && mRandomAngle >= 180) {
+            cx = -Math.abs(cx);
+            cy = -Math.abs(cy);
         } else {
-            cx = ox;
-            cy = oy;
+            cx = +Math.abs(cx);
+            cy = -Math.abs(cy);
         }
+//        } else {
+//            cx = ox;
+//            cy = oy;
+//        }
 
 //        Log.d("FlyawayParticle", "mOuterRadius:" + mOuterRadius);
 
