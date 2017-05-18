@@ -49,7 +49,6 @@ public class HomeActivity extends AppCompatActivity {
         mIvAvatar = (ImageView) findViewById(R.id.iv_avatar);
 //        explosionView.setSrc(R.mipmap.logo_pink);
 
-
         mIvAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
