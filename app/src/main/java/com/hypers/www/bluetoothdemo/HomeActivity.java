@@ -59,7 +59,6 @@ public class HomeActivity extends AppCompatActivity {
                     explosionView.setMode(ExplosionView.MODE.ANNULUS);
                 }
                 explosionView.explode(v);
-
             }
         });
 
