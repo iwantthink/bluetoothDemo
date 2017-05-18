@@ -216,7 +216,7 @@ public class ExplosionView extends View {
             }
         }
 
-        view.setVisibility(GONE);
+        view.setVisibility(VISIBLE);
 
         explode(view, mRect);
 
@@ -290,7 +290,6 @@ public class ExplosionView extends View {
      */
     private void attach2Activity(Activity activity) {
         ViewGroup rootView = (ViewGroup) activity.findViewById(Window.ID_ANDROID_CONTENT);
-
         ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         rootView.addView(this, lp);

@@ -12,9 +12,7 @@ import com.hmt.analytics.viewexplosion.particle.Particle;
 import java.util.Random;
 
 
-/**
- * Created by Administrator on 2015/11/29 0029.
- */
+
 public class FlyawayFactory extends ParticleFactory {
     public static final int PART_WH = 8; //默认小球宽高
     private static Random sRandom = new Random();

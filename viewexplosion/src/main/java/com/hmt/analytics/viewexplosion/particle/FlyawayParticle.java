@@ -108,27 +108,25 @@ public class FlyawayParticle extends Particle {
     }
 
     float mFlashFrequency = 0.01f;
-    float mMoveSpeed = 1f;
+    float mMoveSpeed = 0.5f;
 
     @Override
     protected void caculate(float factor) {
         //控制移动速度
         float moveSpeed = 1 - FlyawayFactory.mInterpolator.getInterpolation(mOuterRadius / mMaxRadius);
-        if (moveSpeed > 0.8f) {
-            moveSpeed = 0.8f;
+        if (moveSpeed > 0.6f) {
+            moveSpeed = 0.5f;
         } else if (moveSpeed < 0.4f) {
-            moveSpeed = 0.4f;
+            moveSpeed = 0.5f;
         }
 
-        mOuterRadius += moveSpeed;
+
+        mOuterRadius += mMoveSpeed;
         //控制显示区域
         if (mOuterRadius > mMaxRadius) {
             mOuterRadius = mStartRadius;
         }
-//        Log.d("FlyawayParticle", "Math.sin(mRandomAngle):" + Math.sin(mRandomAngle));
-//        Log.d("FlyawayParticle", "Math.cos(mRandomAngle):" + Math.cos(mRandomAngle));
 
-//        if (mOuterRadius >= mStartShowRadius) {
         cx = (float) (mOuterRadius * Math.sin(mRandomAngle));
         cy = (float) (mOuterRadius * Math.cos(mRandomAngle));
         if (mRandomAngle < 90 && mRandomAngle > 0) {
@@ -144,30 +142,7 @@ public class FlyawayParticle extends Particle {
             cx = +Math.abs(cx);
             cy = -Math.abs(cy);
         }
-//        } else {
-//            cx = ox;
-//            cy = oy;
-//        }
 
-//        Log.d("FlyawayParticle", "mOuterRadius:" + mOuterRadius);
-
-//        Log.d("FlyawayParticle", "cx:" + cx);
-//        Log.d("FlyawayParticle", "cy:" + cy);
-
-
-//        mRadius = mRadius - factor * random.nextInt(2);
         mAlpha = 0.8f;
-//        if (mAlpha < 0.2) {
-//            mAlpha += mFlashFrequency;
-//        } else if (mAlpha > 1) {
-//            mAlpha -= mFlashFrequency;
-//        } else {
-//            if (mRandom.nextFloat() > 0.5) {
-//                mAlpha -= mFlashFrequency;
-//            } else {
-//                mAlpha += mFlashFrequency;
-//            }
-//        }
-//        mAlpha = (1f - factor) * (1 + random.nextFloat());
     }
 }
