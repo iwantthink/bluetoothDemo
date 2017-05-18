@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import com.hmt.analytics.viewexplosion.ExplosionView;
 import com.hmt.analytics.viewexplosion.factory.FlyawayFactory;
-import com.plattysoft.leonids.ParticleSystem;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -50,8 +49,6 @@ public class HomeActivity extends AppCompatActivity {
         mIvAvatar = (ImageView) findViewById(R.id.iv_avatar);
 //        explosionView.setSrc(R.mipmap.logo_pink);
 
-        final ParticleSystem system = new ParticleSystem(HomeActivity.this, 50, R.mipmap.share, 1000, R.id.activity_home)
-                .setSpeedRange(0.1f, 0.25f);
 
         mIvAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +60,6 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 explosionView.explode(v);
 
-//                system.emit(v, 100);
             }
         });
 
