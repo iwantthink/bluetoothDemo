@@ -57,14 +57,6 @@ public class FlyawayParticle extends Particle {
         mMaxRadius = mBound.width() / 10 * 13;
         mAlpha = mRandom.nextFloat();
         mStartShowRadius = mBound.width() > mBound.height() ? mBound.height() / 2 : mBound.width() / 2;
-//        Log.d("FlyawayParticle", "x:" + x);
-//        Log.d("FlyawayParticle", "y:" + y);
-//        Log.d("FlyawayParticle", "mRadius:" + mRadius);
-//        Log.d("FlyawayParticle", "startRadius:" + startRadius);
-//        Log.d("FlyawayParticle", "mCenterX:" + mCenterX);
-//        Log.d("FlyawayParticle", "mCenterY:" + mCenterY);
-//        Log.d("FlyawayParticle", "mMaxRadius:" + mMaxRadius);
-//        Log.d("FlyawayParticle", "mRandomAngle:" + mRandomAngle);
     }
 
 
@@ -96,14 +88,6 @@ public class FlyawayParticle extends Particle {
         if (mOuterRadius >= mStartShowRadius) {
             canvas.drawCircle(cx, cy, mRadius, paint);
         }
-
-
-//        paint.setColor(Color.GRAY);
-//        canvas.drawCircle(0, 0, mRadius, paint);
-//        paint.setStyle(Paint.Style.STROKE);
-//        canvas.drawCircle(0, 0, mMaxRadius, paint);
-//        paint.setColor(Color.BLUE);
-//        canvas.drawCircle(0, 0, mStartShowRadius, paint);
         canvas.restore();
     }
 
