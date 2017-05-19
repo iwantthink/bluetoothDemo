@@ -29,11 +29,6 @@ public class FlyawayParticle extends Particle {
     float mStartShowRadius;//圆点开始显示的半径
     Random mRandom = new Random();
 
-    /**
-     * @param color 颜色
-     * @param x
-     * @param y
-     */
     public FlyawayParticle(int color, float x, float y, Rect bound) {
         super(color, x, y);
         ox = x;
@@ -85,22 +80,21 @@ public class FlyawayParticle extends Particle {
 //            paint.setColor(Color.TRANSPARENT);
 //        }
         paint.setAlpha(255);
-//        if (mPoint2CenterDis >= mStartShowRadius) {
+        if (mPoint2CenterDis >= mStartShowRadius) {
             canvas.drawCircle(cx, cy, mRadius, paint);
-//        }
+        }
         canvas.restore();
     }
 
-    float mFlashFrequency = 0.01f;
     float mMoveSpeed = 0.5f;
 
     @Override
     protected void caculate(float factor) {
         //控制移动速度
         if (mPoint2CenterDis > mStartShowRadius) {
-            mMoveSpeed = 0.3f;
-        } else {
             mMoveSpeed = 0.5f;
+        } else {
+            mMoveSpeed = 0.3f;
         }
 
         mPoint2CenterDis += mMoveSpeed;

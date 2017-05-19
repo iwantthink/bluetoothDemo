@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.util.Log;
-import android.view.animation.DecelerateInterpolator;
 
 import com.hmt.analytics.viewexplosion.particle.FlyawayParticle;
 import com.hmt.analytics.viewexplosion.particle.Particle;
@@ -16,7 +15,6 @@ import java.util.Random;
 public class FlyawayFactory extends ParticleFactory {
     public static final int PART_WH = 8; //默认小球宽高
     private static Random sRandom = new Random();
-    public static DecelerateInterpolator mInterpolator = new DecelerateInterpolator();
 
     /**
      * @param bitmap
@@ -47,18 +45,17 @@ public class FlyawayFactory extends ParticleFactory {
 
         StringBuilder sb = new StringBuilder();
         for (int row = 0; row < partH_Count; row++) { //行
-            if (row % 3 != 0) {
+            if (row % 2 != 0) {
                 continue;
             }
             for (int column = 0; column < partW_Count; column++) { //列
                 //取得当前粒子所在位置的颜色
 //                int color = bitmap.getPixel(column * bitmap_part_w, row * bitmap_part_h);
-                if (column % 3 == 0) {
+                if (column % 2 == 0) {
 //                    float x = bound.left + FlyawayFactory.PART_WH * column;
 //                    float y = bound.top + FlyawayFactory.PART_WH * row;
                     float radius = PART_WH - sRandom.nextInt(6);//小球大小
                     float randomAngle = sRandom.nextInt(360);
-//                    float startRadius = bound.width() > bound.height() ? bound.height() / 5 * 2 : bound.width() / 5 * 2;
                     float startRadius = bound.width() > bound.height() ? bound.height() / 2 :
                             bound.width() / 2;
                     startRadius -= sRandom.nextInt(bound.width() / 2);

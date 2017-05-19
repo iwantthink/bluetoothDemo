@@ -24,9 +24,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-/**
- * Created by Administrator on 2015/11/28 0028.
- */
 public class ExplosionView extends View {
     private static final String TAG = ExplosionView.class.getSimpleName();
     private ArrayList<ExplosionAnimator> explosionAnimators;
@@ -69,7 +66,7 @@ public class ExplosionView extends View {
         } else {
             drawPoint(canvas);
         }
-//        drawBitmap(canvas);
+        drawBitmap(canvas);
         drawLine(canvas);
     }
 
