@@ -69,7 +69,7 @@ public class ExplosionView extends View {
         } else {
             drawPoint(canvas);
         }
-        drawBitmap(canvas);
+//        drawBitmap(canvas);
         drawLine(canvas);
     }
 

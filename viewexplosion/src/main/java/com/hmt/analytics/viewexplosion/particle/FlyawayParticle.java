@@ -85,9 +85,9 @@ public class FlyawayParticle extends Particle {
 //            paint.setColor(Color.TRANSPARENT);
 //        }
         paint.setAlpha(255);
-        if (mPoint2CenterDis >= mStartShowRadius) {
+//        if (mPoint2CenterDis >= mStartShowRadius) {
             canvas.drawCircle(cx, cy, mRadius, paint);
-        }
+//        }
         canvas.restore();
     }
 
@@ -98,9 +98,9 @@ public class FlyawayParticle extends Particle {
     protected void caculate(float factor) {
         //控制移动速度
         if (mPoint2CenterDis > mStartShowRadius) {
-            mMoveSpeed = 0.5f;
+            mMoveSpeed = 0.3f;
         } else {
-            mMoveSpeed = 0.4f;
+            mMoveSpeed = 0.5f;
         }
 
         mPoint2CenterDis += mMoveSpeed;

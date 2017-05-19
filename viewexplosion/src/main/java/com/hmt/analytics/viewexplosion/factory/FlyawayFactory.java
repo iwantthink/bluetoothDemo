@@ -73,15 +73,10 @@ public class FlyawayFactory extends ParticleFactory {
                             bound.width() / 2;
 //                    float startRadius = 11;
                     startRadius -= sRandom.nextInt(bound.width() / 2);
-                    sb.append("row = " + row + ",column = " + column);
-                    sb.append(" randomAngle = " + randomAngle);
-                    sb.append(" startRadius = " + startRadius + "\n" +
-                            "\n");
                     particles[row][column] = new FlyawayParticle(color, 0, 0, radius,
                             randomAngle, startRadius, bound);
                 }
             }
-            Log.d("FlyawayFactory", sb.toString());
         }
     }
 
