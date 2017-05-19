@@ -47,8 +47,7 @@ public class HomeActivity extends AppCompatActivity {
         final ExplosionView explosionView = new ExplosionView(this, new FlyawayFactory());
         explosionView.setHideStatusBar(true);
         mIvAvatar = (ImageView) findViewById(R.id.iv_avatar);
-//        explosionView.setSrc(R.mipmap.logo_pink);
-
+        explosionView.setSrc(R.mipmap.logo_pink);
         mIvAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

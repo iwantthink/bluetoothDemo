@@ -40,6 +40,7 @@
         android:layout_marginBottom="280dp"
         android:background="@drawable/avatar_bg"
         android:padding="15dp"
+        android:scaleType="center"
         android:src="@mipmap/logo_pink"
         />
 

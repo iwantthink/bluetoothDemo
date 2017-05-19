@@ -54,7 +54,7 @@ public class ExplosionView extends View {
         explosionAnimators = new ArrayList<ExplosionAnimator>();
         explosionAnimatorsMap = new HashMap<View, ExplosionAnimator>();
         mParticleFactory = particleFactory;
-//        attach2Activity((Activity) getContext());
+        attach2Activity((Activity) getContext());
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         setLayerType(LAYER_TYPE_SOFTWARE, null);
         mRandom = new Random();
@@ -134,12 +134,12 @@ public class ExplosionView extends View {
         if (null != mRect && null != mBitmap) {
             canvas.save();
             canvas.translate(mRect.centerX(), mRect.centerY());
-            mPaint.setColor(Color.argb(125, 255, 0, 0));
-//            mPaint.setMaskFilter(new BlurMaskFilter(Utils.dp2Px(1), BlurMaskFilter.Blur.SOLID));
-            mPaint.setShadowLayer(Utils.dp2Px(5), 10, 10, Color.BLACK);
-            canvas.drawRect(-mBitmap.getWidth() / 2, -mBitmap.getHeight() / 2, mBitmap.getWidth() / 2, mBitmap.getHeight() / 2, mPaint);
-//            mPaint.setMaskFilter(null);
-            mPaint.clearShadowLayer();
+//            mPaint.setColor(Color.argb(125, 255, 0, 0));
+////            mPaint.setMaskFilter(new BlurMaskFilter(Utils.dp2Px(1), BlurMaskFilter.Blur.SOLID));
+//            mPaint.setShadowLayer(Utils.dp2Px(5), 10, 10, Color.BLACK);
+//            canvas.drawRect(-mBitmap.getWidth() / 2, -mBitmap.getHeight() / 2, mBitmap.getWidth() / 2, mBitmap.getHeight() / 2, mPaint);
+////            mPaint.setMaskFilter(null);
+//            mPaint.clearShadowLayer();
             mPaint.setColor(Color.BLACK);
             canvas.drawBitmap(mBitmap, -mBitmap.getWidth() / 2, -mBitmap.getHeight() / 2, mPaint);
             canvas.restore();
@@ -186,17 +186,17 @@ public class ExplosionView extends View {
 
         mRect = new Rect();
         view.getGlobalVisibleRect(mRect); //得到view相对于整个屏幕的坐标
-//        if (getParent() == null) {
-//            attach2Activity((Activity) getContext());
-//        }
-//        int contentTop = ((ViewGroup) getParent()).getTop();
-//        Rect frame = new Rect();
-//        ((Activity) getContext()).getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
-//        int statusBarHeight = frame.top;
-//        if (isHideStatusBar) {
-//            statusBarHeight = 0;
-//        }
-//        mRect.offset(0, -contentTop - statusBarHeight);//去掉状态栏高度和标题栏高度
+        if (getParent() == null) {
+            attach2Activity((Activity) getContext());
+        }
+        int contentTop = ((ViewGroup) getParent()).getTop();
+        Rect frame = new Rect();
+        ((Activity) getContext()).getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+        int statusBarHeight = frame.top;
+        if (isHideStatusBar) {
+            statusBarHeight = 0;
+        }
+        mRect.offset(0, -contentTop - statusBarHeight);//去掉状态栏高度和标题栏高度
         if (mRect.width() == 0 || mRect.height() == 0) {
             Log.d(TAG, "rect width or height is zero");
             return;
@@ -284,12 +284,6 @@ public class ExplosionView extends View {
             isRunning = animator.isRunning();
         }
         return isRunning;
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(555,555);
     }
 
     /**

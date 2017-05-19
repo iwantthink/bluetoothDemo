@@ -19,7 +19,7 @@ public class FlyawayParticle extends Particle {
     float mAlpha;
     Rect mBound;
     float ox, oy;
-    float mOuterRadius;//圆点距离中心的距离
+    float mPoint2CenterDis;//圆点距离中心的距离
     float mCenterX;
     float mCenterY;
     Utils.Polar mPolar;
@@ -49,7 +49,7 @@ public class FlyawayParticle extends Particle {
         oy = y;
         mBound = bound;
         mRadius = radius;
-        mOuterRadius = startRadius;
+        mPoint2CenterDis = startRadius;
         mStartRadius = startRadius;
         mCenterX = bound.centerX();
         mCenterY = bound.centerY();
@@ -81,11 +81,11 @@ public class FlyawayParticle extends Particle {
 //        } else {
 //            paint.setColor(Color.BLACK);
 //        }
-//        if (mOuterRadius < mBound.width() / 2 || mOuterRadius >= mMaxRadius - mMaxRadius / 10) {
+//        if (mPoint2CenterDis < mBound.width() / 2 || mPoint2CenterDis >= mMaxRadius - mMaxRadius / 10) {
 //            paint.setColor(Color.TRANSPARENT);
 //        }
         paint.setAlpha(255);
-        if (mOuterRadius >= mStartShowRadius) {
+        if (mPoint2CenterDis >= mStartShowRadius) {
             canvas.drawCircle(cx, cy, mRadius, paint);
         }
         canvas.restore();
@@ -97,22 +97,20 @@ public class FlyawayParticle extends Particle {
     @Override
     protected void caculate(float factor) {
         //控制移动速度
-        float moveSpeed = 1 - FlyawayFactory.mInterpolator.getInterpolation(mOuterRadius / mMaxRadius);
-        if (moveSpeed > 0.6f) {
-            moveSpeed = 0.5f;
-        } else if (moveSpeed < 0.4f) {
-            moveSpeed = 0.5f;
+        if (mPoint2CenterDis > mStartShowRadius) {
+            mMoveSpeed = 0.5f;
+        } else {
+            mMoveSpeed = 0.4f;
         }
 
-
-        mOuterRadius += mMoveSpeed;
+        mPoint2CenterDis += mMoveSpeed;
         //控制显示区域
-        if (mOuterRadius > mMaxRadius) {
-            mOuterRadius = mStartRadius;
+        if (mPoint2CenterDis > mMaxRadius) {
+            mPoint2CenterDis = mStartRadius;
         }
 
-        cx = (float) (mOuterRadius * Math.sin(mRandomAngle));
-        cy = (float) (mOuterRadius * Math.cos(mRandomAngle));
+        cx = (float) (mPoint2CenterDis * Math.sin(mRandomAngle));
+        cy = (float) (mPoint2CenterDis * Math.cos(mRandomAngle));
         if (mRandomAngle < 90 && mRandomAngle > 0) {
             cx = Math.abs(cx);
             cy = Math.abs(cy);
