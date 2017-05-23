@@ -97,7 +97,7 @@ public class ExplosionView extends View {
                 mAnnulusRadius.remove(i);
             }
         }
-        if (mAnnulusRadius.get(0) > mAnnulusGap) {
+        if (mAnnulusRadius.size() > 0 && mAnnulusRadius.get(0) > mAnnulusGap) {
             mAnnulusRadius.add(0, 0f);
         }
 

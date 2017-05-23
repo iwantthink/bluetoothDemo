@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.ParcelUuid;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -36,6 +37,7 @@ public class HomeActivity extends AppCompatActivity {
     private BluetoothGattServer mGattServer;
     private BluetoothLeAdvertiser mBluetoothAdvertiser;
     private ImageView mIvAvatar;
+    private static ExplosionView sExplosionView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,37 +45,35 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        initBle();
 
+        sExplosionView = initExplo();
+        mIvAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (sExplosionView.getMode() == ExplosionView.MODE.ANNULUS) {
+                    openBle();
+                } else {
+                    closeBle();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        sExplosionView.setMode(ExplosionView.MODE.ANNULUS);
+        sExplosionView.explode(mIvAvatar);
+    }
+
+    @NonNull
+    private ExplosionView initExplo() {
         final ExplosionView explosionView = new ExplosionView(this, new FlyawayFactory());
         explosionView.setHideStatusBar(true);
         mIvAvatar = (ImageView) findViewById(R.id.iv_avatar);
         explosionView.setSrc(R.mipmap.logo_pink);
-        mIvAvatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (explosionView.getMode() == ExplosionView.MODE.ANNULUS) {
-                    explosionView.setMode(ExplosionView.MODE.EXPLOSION);
-                } else {
-                    explosionView.setMode(ExplosionView.MODE.ANNULUS);
-                }
-                explosionView.explode(v);
-            }
-        });
-
-
-//        mTvBleState = (TextView) findViewById(R.id.tv_state);
-//        initBle();
-//        mSwitchBle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if (isChecked) {
-//                    openBle();
-//                } else {
-//                    closeBle();
-//                }
-//            }
-//        });
-
+        return explosionView;
     }
 
     private void initBle() {
@@ -91,12 +91,13 @@ public class HomeActivity extends AppCompatActivity {
                 //开启蓝牙
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BLE);
-            } else if (null != mBluetoothAdapter && mBluetoothAdapter.isEnabled()) {
-                switchTrue();
-                openBle();
             }
+//            else if (null != mBluetoothAdapter && mBluetoothAdapter.isEnabled()) {
+//                switchTrue();
+//                openBle();
+//            }
         } else {
-            Toast.makeText(mActivity, "设置不支持BLE", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity, "设备不支持BLE功能", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -203,10 +204,17 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void switchTrue() {
-
+        if (null != sExplosionView && null != mIvAvatar) {
+            sExplosionView.setMode(ExplosionView.MODE.EXPLOSION);
+            sExplosionView.explode(mIvAvatar);
+        }
     }
 
     private void switchFalse() {
+        if (null != sExplosionView && null != mIvAvatar) {
+            sExplosionView.setMode(ExplosionView.MODE.ANNULUS);
+            sExplosionView.explode(mIvAvatar);
+        }
 
     }
 
