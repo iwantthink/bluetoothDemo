@@ -24,6 +24,10 @@ import android.widget.Toast;
 
 import com.hmt.analytics.viewexplosion.ExplosionView;
 import com.hmt.analytics.viewexplosion.factory.FlyawayFactory;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -37,6 +41,7 @@ public class HomeActivity extends AppCompatActivity {
     private BluetoothGattServer mGattServer;
     private BluetoothLeAdvertiser mBluetoothAdvertiser;
     private ImageView mIvAvatar;
+    private ImageView mIvShare;
     private static ExplosionView sExplosionView;
 
     @Override
@@ -45,7 +50,12 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        initView();
         initBle();
+        initListener();
+    }
+
+    private void initListener() {
 
         sExplosionView = initExplo();
         mIvAvatar.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +68,43 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
+
+        mIvShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ShareAction(HomeActivity.this).withText("这是Hypers!Girl!")
+                        .setDisplayList(SHARE_MEDIA.SMS, SHARE_MEDIA.SINA, SHARE_MEDIA.WEIXIN)
+                        .setCallback(new UMShareListener() {
+                            @Override
+                            public void onStart(SHARE_MEDIA platform) {
+                                //分享开始的回调
+                            }
+
+                            @Override
+                            public void onResult(SHARE_MEDIA platform) {
+                                Toast.makeText(HomeActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onError(SHARE_MEDIA platform, Throwable t) {
+                                Toast.makeText(HomeActivity.this, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+                                if (t != null) {
+                                    Log.e("throw", "throw:" + t.getMessage());
+                                }
+                            }
+
+                            @Override
+                            public void onCancel(SHARE_MEDIA platform) {
+                                Toast.makeText(HomeActivity.this, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+                            }
+                        }).open();
+            }
+        });
+    }
+
+    private void initView() {
+        mIvAvatar = (ImageView) findViewById(R.id.iv_avatar);
+        mIvShare = (ImageView) findViewById(R.id.iv_share);
     }
 
     @Override
@@ -71,7 +118,6 @@ public class HomeActivity extends AppCompatActivity {
     private ExplosionView initExplo() {
         final ExplosionView explosionView = new ExplosionView(this, new FlyawayFactory());
         explosionView.setHideStatusBar(true);
-        mIvAvatar = (ImageView) findViewById(R.id.iv_avatar);
         explosionView.setSrc(R.mipmap.logo_pink);
         return explosionView;
     }
@@ -148,7 +194,7 @@ public class HomeActivity extends AppCompatActivity {
 
     //发送广播的回调，onStartSuccess/onStartFailure很明显的两个Callback
     private AdvertiseCallback mAdvCallback = new AdvertiseCallback() {
-        public void onStartSuccess(android.bluetooth.le.AdvertiseSettings settingsInEffect) {
+        public void onStartSuccess(AdvertiseSettings settingsInEffect) {
             if (settingsInEffect != null) {
                 Log.d(TAG, "onStartSuccess TxPowerLv=" + settingsInEffect.getTxPowerLevel() + " mode=" + settingsInEffect.getMode() + " timeout=" + settingsInEffect.getTimeout());
                 switchTrue();
@@ -190,6 +236,8 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_ENABLE_BLE:
                 if (resultCode == RESULT_OK) {
@@ -218,10 +266,6 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
 
     private void closeBle() {
         //关闭BluetoothLeAdvertiser，BluetoothGattServer

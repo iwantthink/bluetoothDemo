@@ -11,6 +11,13 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    android {
+        lintOptions {
+            abortOnError false
+        }
+    }
+
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
@@ -43,4 +50,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.makeramen:roundedimageview:2.3.0'
     compile project(':viewexplosion')
+    compile 'com.google.android.gms:play-services-appindexing:8.4.0'
 }
