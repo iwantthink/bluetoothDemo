@@ -43,6 +43,7 @@ public class HomeActivity extends AppCompatActivity {
     private ImageView mIvAvatar;
     private ImageView mIvShare;
     private static ExplosionView sExplosionView;
+    private static boolean sIsFirstEnter = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -110,8 +111,12 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        sExplosionView.setMode(ExplosionView.MODE.ANNULUS);
-        sExplosionView.explode(mIvAvatar);
+        if (sIsFirstEnter) {
+            sExplosionView.setMode(ExplosionView.MODE.ANNULUS);
+            sExplosionView.explode(mIvAvatar);
+            sIsFirstEnter = false;
+        }
+
     }
 
     @NonNull
