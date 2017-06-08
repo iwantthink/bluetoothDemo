@@ -28,6 +28,8 @@ import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -73,7 +75,13 @@ public class HomeActivity extends AppCompatActivity {
         mIvShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new ShareAction(HomeActivity.this).withText("这是Hypers!Girl!")
+
+                UMWeb web = new UMWeb("http://www.hypers.com/");
+                web.setTitle("我正在使用Reno");
+                web.setThumb(new UMImage(HomeActivity.this, R.mipmap.ic_launcher));
+                web.setDescription("快来下载吧");
+
+                new ShareAction(HomeActivity.this).withMedia(web)
                         .setDisplayList(SHARE_MEDIA.SMS, SHARE_MEDIA.SINA, SHARE_MEDIA.WEIXIN)
                         .setCallback(new UMShareListener() {
                             @Override
