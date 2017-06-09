@@ -1,4 +1,4 @@
-package com.hypers.www.bluetoothdemo.login.v;
+package com.hypers.www.bluetooth.login.v;
 
 /**
  * Created by renbo on 2017/5/2.

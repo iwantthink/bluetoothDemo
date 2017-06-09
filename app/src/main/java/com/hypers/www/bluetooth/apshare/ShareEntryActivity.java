@@ -1,4 +1,4 @@
-package com.hypers.www.bluetoothdemo.apshare;
+package com.hypers.www.bluetooth.apshare;
 
 import com.umeng.socialize.media.ShareCallbackActivity;
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.hypers.www.bluetoothdemo">
+          package="com.hypers.www.bluetooth">
 
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
@@ -35,17 +35,16 @@
             android:name=".HomeActivity"
             android:screenOrientation="portrait"
             >
+        </activity>
+        <activity
+            android:name=".login.v.LoginActivity"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".login.v.LoginActivity"
-            android:screenOrientation="portrait"
-
-            >
         </activity>
         <activity android:name=".registered.RegisteredActivity">
         </activity>

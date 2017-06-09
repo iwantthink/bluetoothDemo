@@ -1,4 +1,4 @@
-package com.hypers.www.bluetoothdemo;
+package com.hypers.www.bluetooth;
 
 import android.app.Application;
 

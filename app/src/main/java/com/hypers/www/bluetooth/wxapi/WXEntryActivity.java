@@ -1,4 +1,4 @@
-package com.hypers.www.bluetoothdemo.wxapi;
+package com.hypers.www.bluetooth.wxapi;
 
 import com.umeng.weixin.callback.WXCallbackActivity;
 

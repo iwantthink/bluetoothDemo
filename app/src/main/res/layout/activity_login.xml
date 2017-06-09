@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@mipmap/pink"
     android:fitsSystemWindows="true"
-    tools:context="com.hypers.www.bluetoothdemo.login.v.LoginActivity"
+    tools:context=".login.v.LoginActivity"
     >
 
     <ImageView
