@@ -1,4 +1,4 @@
-package com.hypers.www.bluetooth;
+package com.hypers.www.bluetooth.home.v;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -24,6 +24,8 @@ import android.widget.Toast;
 
 import com.hmt.analytics.viewexplosion.ExplosionView;
 import com.hmt.analytics.viewexplosion.factory.FlyawayFactory;
+import com.hypers.www.bluetooth.MockServerCallBack;
+import com.hypers.www.bluetooth.R;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
@@ -31,7 +33,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements IHomeView {
 
     public static final int REQUEST_ENABLE_BLE = 111;
     public static final String BLE_SERVICE_CLOSED = "蓝牙外设服务已关闭";
@@ -311,5 +313,14 @@ public class HomeActivity extends AppCompatActivity {
         super.onDestroy();
         Log.d(TAG, "onDestroy");
         closeBle();
+    }
+
+    @Override
+    public void showAnim(boolean mode) {
+        if (mode) {
+            switchTrue();
+        } else {
+            switchFalse();
+        }
     }
 }

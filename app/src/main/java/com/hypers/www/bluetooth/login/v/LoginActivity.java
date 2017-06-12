@@ -17,7 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.hypers.www.bluetooth.HomeActivity;
+import com.hypers.www.bluetooth.home.v.HomeActivity;
 import com.hypers.www.bluetooth.R;
 import com.hypers.www.bluetooth.login.p.LoginPresentImpl;
 
