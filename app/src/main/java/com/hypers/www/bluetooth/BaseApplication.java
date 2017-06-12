@@ -2,6 +2,7 @@ package com.hypers.www.bluetooth;
 
 import android.app.Application;
 
+import com.hmt.analytics.HMTAgent;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 
@@ -20,6 +21,7 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        HMTAgent.Initialize(this);
         UMShareAPI.get(this);
     }
 }

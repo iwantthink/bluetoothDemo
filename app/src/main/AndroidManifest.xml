@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"
@@ -29,6 +30,16 @@
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5923fd8a99f0c71aaa0000a0">
+        </meta-data>
+
+        <meta-data
+            android:name="HMT_APPKEY"
+            android:value="hmt_3EFBYDIN">
+        </meta-data>
+
+        <meta-data
+            android:name="HMT_CHANNEL"
+            android:value="hmt">
         </meta-data>
 
         <activity
