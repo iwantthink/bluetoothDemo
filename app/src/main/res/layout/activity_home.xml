@@ -52,7 +52,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="540dp"
-        android:text="Hi!Hypers girl"
+        android:text="每一步  都闪光"
         android:textColor="#ffffff"
         android:textSize="19dp"
         />
