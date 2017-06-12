@@ -84,13 +84,13 @@ public class HomeActivity extends AppCompatActivity implements IHomeView {
             @Override
             public void onClick(View v) {
 
-                UMWeb web = new UMWeb("http://www.hypers.com/");
+                UMWeb web = new UMWeb("http://www.hypers.com/reno/");
                 web.setTitle("我正在使用Reno");
-                web.setThumb(new UMImage(HomeActivity.this, R.mipmap.ic_launcher));
+                web.setThumb(new UMImage(HomeActivity.this, R.mipmap.logo_pink_mini));
                 web.setDescription("快来下载吧");
 
                 new ShareAction(HomeActivity.this).withMedia(web)
-                        .setDisplayList(SHARE_MEDIA.SMS, SHARE_MEDIA.SINA, SHARE_MEDIA.WEIXIN)
+                        .setDisplayList(SHARE_MEDIA.SINA, SHARE_MEDIA.WEIXIN)
                         .setCallback(new UMShareListener() {
                             @Override
                             public void onStart(SHARE_MEDIA platform) {
