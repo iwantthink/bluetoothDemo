@@ -7,5 +7,5 @@ package com.hypers.www.bluetooth.login.m;
 public interface OnLoginListener {
     void loginSuccess(User user);
 
-    void loginFail();
+    void loginFail(int code, String msg);
 }

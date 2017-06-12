@@ -10,7 +10,7 @@ import com.hypers.www.bluetooth.login.v.ILoginView;
  * Created by renbo on 2017/5/2.
  */
 
-public class LoginPresentImpl implements ILoginPresent {
+public class LoginPresentImpl implements ILoginPresent, OnLoginListener {
 
     private ILoginView mLoginView;
     private ILoginModel mLoginModel;
@@ -23,18 +23,27 @@ public class LoginPresentImpl implements ILoginPresent {
     @Override
     public void login(String account, String password) {
         mLoginView.showProgressBar(true);
-        mLoginModel.login(account, password, new OnLoginListener() {
-            @Override
-            public void loginSuccess(User user) {
-                mLoginView.showProgressBar(false);
-                mLoginView.toHomeActivity();
-            }
+        mLoginModel.login(account, password, this);
+    }
 
-            @Override
-            public void loginFail() {
-                mLoginView.showProgressBar(false);
-                mLoginView.showFailedError();
-            }
-        });
+    @Override
+    public void onDestroy() {
+        mLoginView = null;
+    }
+
+    @Override
+    public void loginSuccess(User user) {
+        if (null != mLoginView) {
+            mLoginView.showProgressBar(false);
+            mLoginView.toHomeActivity();
+        }
+    }
+
+    @Override
+    public void loginFail(int code, String msg) {
+        if (null != mLoginView) {
+            mLoginView.showProgressBar(false);
+            mLoginView.showFailedError(code, msg);
+        }
     }
 }

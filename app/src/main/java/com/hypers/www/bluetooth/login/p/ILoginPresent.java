@@ -8,4 +8,6 @@ public interface ILoginPresent {
 
     void login(String account, String password);
 
+    void onDestroy();
+
 }

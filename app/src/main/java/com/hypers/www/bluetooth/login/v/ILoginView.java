@@ -14,9 +14,11 @@ public interface ILoginView {
 
     void toHomeActivity();
 
-    void showFailedError();
+    void showFailedError(int code, String msg);
 
     String getUserName();
 
     String getPassword();
+
+    void showPswVisibility(boolean isShow);
 }

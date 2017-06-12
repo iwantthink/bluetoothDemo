@@ -47,6 +47,12 @@ public class HomeActivity extends AppCompatActivity {
     private static ExplosionView sExplosionView;
     private boolean sIsFirstEnter = true;
 
+    public static void start(Activity context) {
+        Intent intent = new Intent(context, HomeActivity.class);
+        context.startActivity(intent);
+        context.finish();
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
