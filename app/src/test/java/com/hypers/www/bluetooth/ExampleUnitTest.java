@@ -2,7 +2,10 @@ package com.hypers.www.bluetooth;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -14,4 +17,17 @@ public class ExampleUnitTest {
     public void addition_isCorrect() throws Exception {
         assertEquals(4, 2 + 2);
     }
+
+    @Test
+    public void atomicIntegerTest() {
+        AtomicInteger integer = new AtomicInteger();
+        integer.compareAndSet(0, 2);
+        assertEquals(2, integer.get());
+//        Log.d("HomeActivity", "integer.get():" + integer.get());
+
+        AtomicReference atomicReference;
+    }
+
+
+
 }

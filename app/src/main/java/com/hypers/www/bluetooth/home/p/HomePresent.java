@@ -165,7 +165,7 @@ public class HomePresent implements IHomePresent {
         }
     }
 
-    private static AdvertiseSettings createAdvSettings(boolean connectable, int timeoutMillis) {
+    private AdvertiseSettings createAdvSettings(boolean connectable, int timeoutMillis) {
         AdvertiseSettings.Builder builder = new AdvertiseSettings.Builder();
         //设置广播的模式,应该是跟功耗相关
         builder.setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_BALANCED);
@@ -176,7 +176,7 @@ public class HomePresent implements IHomePresent {
     }
 
     //设置一下FMP广播数据
-    private static AdvertiseData createFMPAdvertiseData() {
+    private AdvertiseData createFMPAdvertiseData() {
         AdvertiseData.Builder builder = new AdvertiseData.Builder();
         builder.setIncludeDeviceName(true);
         builder.addServiceUuid(ParcelUuid.fromString("0000fff2-0000-1000-8000-00805f9b34fb"));
@@ -235,7 +235,7 @@ public class HomePresent implements IHomePresent {
 
     @Override
     public void switchTrue() {
-        if (null != sExplosionView && null != mHomeView.getIvAvatar()) {
+        if (null != sExplosionView && null != mHomeView && null != mHomeView.getIvAvatar()) {
             sExplosionView.setMode(ExplosionView.MODE.EXPLOSION);
             sExplosionView.explode(mHomeView.getIvAvatar());
         }
@@ -243,7 +243,7 @@ public class HomePresent implements IHomePresent {
 
     @Override
     public void switchFalse() {
-        if (null != sExplosionView && null != mHomeView.getIvAvatar()) {
+        if (null != sExplosionView && null != mHomeView && null != mHomeView.getIvAvatar()) {
             sExplosionView.setMode(ExplosionView.MODE.ANNULUS);
             sExplosionView.explode(mHomeView.getIvAvatar());
         }
@@ -266,12 +266,15 @@ public class HomePresent implements IHomePresent {
 
                     @Override
                     public void onResult(SHARE_MEDIA platform) {
-                        mHomeView.showToast(platform + " 分享成功啦!");
+                        if (null != mHomeView)
+                            mHomeView.showToast(platform + " 分享成功啦!");
                     }
 
                     @Override
                     public void onError(SHARE_MEDIA platform, Throwable t) {
-                        mHomeView.showToast(platform + " 分享失败啦!");
+                        if (null != mHomeView) {
+                            mHomeView.showToast(platform + " 分享失败啦!");
+                        }
                         if (t != null) {
                             Log.e("throw", "throw:" + t.getMessage());
                         }
@@ -279,7 +282,9 @@ public class HomePresent implements IHomePresent {
 
                     @Override
                     public void onCancel(SHARE_MEDIA platform) {
-                        mHomeView.showToast(platform + " 分享取消了!");
+                        if (null != mHomeView) {
+                            mHomeView.showToast(platform + " 分享取消了!");
+                        }
                     }
                 }).open();
     }

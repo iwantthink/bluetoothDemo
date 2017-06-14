@@ -11,7 +11,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.hypers.www.bluetooth.R;
-import com.hypers.www.bluetooth.home.p.HomePresent;
+import com.hypers.www.bluetooth.home.component.DaggerHomeComponent;
+import com.hypers.www.bluetooth.home.component.HomeComponent;
+import com.hypers.www.bluetooth.home.module.HomeModule;
 import com.hypers.www.bluetooth.home.p.IHomePresent;
 
 public class HomeActivity extends AppCompatActivity implements IHomeView {
@@ -19,7 +21,7 @@ public class HomeActivity extends AppCompatActivity implements IHomeView {
     private static final String TAG = HomeActivity.class.getSimpleName();
     private ImageView mIvAvatar;
     private ImageView mIvShare;
-    private IHomePresent mHomePresent;
+    public IHomePresent mHomePresent;
 
     public static void start(Activity context) {
         Intent intent = new Intent(context, HomeActivity.class);
@@ -33,8 +35,12 @@ public class HomeActivity extends AppCompatActivity implements IHomeView {
         setContentView(R.layout.activity_home);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        mHomePresent = new HomePresent(HomeActivity.this, this);
         initView();
+        HomeComponent homeComponent = DaggerHomeComponent.
+                builder().
+                homeModule(new HomeModule(HomeActivity.this)).
+                build();
+        mHomePresent = homeComponent.getHomePresent();
         mHomePresent.initBle(HomeActivity.this);
         initListener();
     }
