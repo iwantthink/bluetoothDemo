@@ -1,7 +1,5 @@
 package com.hypers.www.bluetooth.home.p;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 
 /**
@@ -10,23 +8,23 @@ import android.content.Intent;
 
 public interface IHomePresent {
 
-    void initBle(Activity context);
+    void initBle();
 
-    void openBle(Activity context);
+    void openBle();
 
     void closeBle();
 
     void onDestroy();
 
-    void onActivityResult(Context context, int requestCode, int resultCode, Intent data);
-
     void onWindowFocusChanged(boolean hasFocus);
 
-    void changeMode(Activity context);
+    void changeMode();
 
     void switchTrue();
 
     void switchFalse();
 
-    void share(Activity activity);
+    void share();
+
+    void onActivityResult(int requestCode, int resultCode, Intent data);
 }

@@ -30,13 +30,13 @@ import com.umeng.socialize.media.UMWeb;
 import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
 
+
 /**
  * Created by renbo on 2017/6/12.
  */
 
 public class HomePresent implements IHomePresent {
 
-    private IHomeView mHomeView;
     public static final int REQUEST_ENABLE_BLE = 111;
     public static final String BLE_SERVICE_CLOSED = "蓝牙外设服务已关闭";
     private BluetoothAdapter mBluetoothAdapter;
@@ -46,19 +46,22 @@ public class HomePresent implements IHomePresent {
     private BluetoothLeAdvertiser mBluetoothAdvertiser;
     private boolean sIsFirstEnter = true;
     private static ExplosionView sExplosionView;
+    private IHomeView mHomeView;
+    private Activity mActivity;
 
-    public HomePresent(Activity activity, IHomeView homeView) {
-        mHomeView = homeView;
-        sExplosionView = initExplo(activity);
+    public HomePresent(Activity activity) {
+        mHomeView = (IHomeView) activity;
+        mActivity = activity;
+        sExplosionView = initExplo();
     }
 
     @Override
-    public void initBle(Activity context) {
+    public void initBle() {
         //判断是否支持ble
-        boolean supportBLE = checkSupportBLE(context);
+        boolean supportBLE = checkSupportBLE();
         if (supportBLE) {
             mBluetoothManager =
-                    (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
+                    (BluetoothManager) mActivity.getSystemService(Context.BLUETOOTH_SERVICE);
             mBluetoothAdapter = mBluetoothManager.getAdapter();
             //俩种获取bluetoothAdapter 的方式
 //            BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
@@ -67,7 +70,7 @@ public class HomePresent implements IHomePresent {
             } else if (null != mBluetoothAdapter && !mBluetoothAdapter.isEnabled()) {
                 //开启蓝牙
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                context.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BLE);
+                mActivity.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BLE);
             }
 //            else if (null != mBluetoothAdapter && mBluetoothAdapter.isEnabled()) {
 //                switchTrue();
@@ -79,7 +82,7 @@ public class HomePresent implements IHomePresent {
     }
 
     @Override
-    public void openBle(Activity context) {
+    public void openBle() {
         //getBluetoothAdvertiser也是会调用下面的方法去判断是否支持ble
 //                boolean isSupported = mBluetoothAdapter.isMultipleAdvertisementSupported();
         mBluetoothAdvertiser = mBluetoothAdapter.getBluetoothLeAdvertiser();
@@ -89,7 +92,7 @@ public class HomePresent implements IHomePresent {
         } else {
             mMockServerCallBack = new MockServerCallBack();
             //打开BluetoothGattServer
-            mGattServer = mBluetoothManager.openGattServer(context, mMockServerCallBack);
+            mGattServer = mBluetoothManager.openGattServer(mActivity, mMockServerCallBack);
             if (mGattServer == null) {
                 Log.d(TAG, "gatt is null");
             }
@@ -128,23 +131,8 @@ public class HomePresent implements IHomePresent {
     @Override
     public void onDestroy() {
         mHomeView = null;
+        mActivity = null;
         closeBle();
-    }
-
-    @Override
-    public void onActivityResult(Context context, int requestCode, int resultCode, Intent data) {
-        UMShareAPI.get(context).onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case REQUEST_ENABLE_BLE:
-                if (resultCode == RESULT_OK) {
-                    mHomeView.showToast("蓝牙已启用");
-                    switchTrue();
-                } else {
-                    mHomeView.showToast("蓝牙未启用");
-                    switchFalse();
-                }
-                break;
-        }
     }
 
     @Override
@@ -157,9 +145,9 @@ public class HomePresent implements IHomePresent {
     }
 
     @Override
-    public void changeMode(Activity context) {
+    public void changeMode() {
         if (sExplosionView.getMode() == ExplosionView.MODE.ANNULUS) {
-            openBle(context);
+            openBle();
         } else {
             closeBle();
         }
@@ -220,14 +208,14 @@ public class HomePresent implements IHomePresent {
         }
     };
 
-    private boolean checkSupportBLE(Activity context) {
-        return context.getPackageManager().
+    private boolean checkSupportBLE() {
+        return mActivity.getPackageManager().
                 hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE) ? true : false;
     }
 
     @NonNull
-    private ExplosionView initExplo(Activity activity) {
-        final ExplosionView explosionView = new ExplosionView(activity, new FlyawayFactory());
+    private ExplosionView initExplo() {
+        final ExplosionView explosionView = new ExplosionView(mActivity, new FlyawayFactory());
         explosionView.setHideStatusBar(true);
         explosionView.setSrc(R.mipmap.logo_pink);
         return explosionView;
@@ -251,12 +239,12 @@ public class HomePresent implements IHomePresent {
     }
 
     @Override
-    public void share(Activity activity) {
+    public void share() {
         UMWeb web = new UMWeb("http://www.hypers.com/reno/");
         web.setTitle("我正在使用Reno");
-        web.setThumb(new UMImage(activity, R.mipmap.logo_pink_mini));
+        web.setThumb(new UMImage(mActivity, R.mipmap.logo_pink_mini));
         web.setDescription("快来下载吧");
-        new ShareAction(activity).withMedia(web)
+        new ShareAction(mActivity).withMedia(web)
                 .setDisplayList(SHARE_MEDIA.SINA, SHARE_MEDIA.WEIXIN)
                 .setCallback(new UMShareListener() {
                     @Override
@@ -287,5 +275,21 @@ public class HomePresent implements IHomePresent {
                         }
                     }
                 }).open();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        UMShareAPI.get(mActivity).onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_ENABLE_BLE:
+                if (resultCode == RESULT_OK) {
+                    mHomeView.showToast("蓝牙已启用");
+                    switchTrue();
+                } else {
+                    mHomeView.showToast("蓝牙未启用");
+                    switchFalse();
+                }
+                break;
+        }
     }
 }

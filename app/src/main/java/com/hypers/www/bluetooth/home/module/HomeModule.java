@@ -3,7 +3,6 @@ package com.hypers.www.bluetooth.home.module;
 import android.app.Activity;
 
 import com.hypers.www.bluetooth.home.p.HomePresent;
-import com.hypers.www.bluetooth.home.v.IHomeView;
 
 import dagger.Module;
 import dagger.Provides;
@@ -15,16 +14,9 @@ import dagger.Provides;
 public class HomeModule {
 
     private final Activity mActivity;
-//    private IHomeView mHomeView;
 
     public HomeModule(Activity activity) {
         mActivity = activity;
-//        mHomeView = homeView;
-    }
-
-    @Provides
-    public IHomeView provideIHomeView() {
-        return (IHomeView) mActivity;
     }
 
     @Provides
@@ -33,8 +25,8 @@ public class HomeModule {
     }
 
     @Provides
-    public HomePresent provideHomePresent(IHomeView iHomeView, Activity activity) {
-        return new HomePresent(activity, iHomeView);
+    public HomePresent provideHomePresent(Activity activity) {
+        return new HomePresent(activity);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.hypers.www.bluetooth;
+package com.hypers.www.bluetooth.base;
 
 import android.app.Application;
 
@@ -22,5 +22,8 @@ public class BaseApplication extends Application {
         super.onCreate();
         HMTAgent.Initialize(this);
         UMShareAPI.get(this);
+
     }
+
 }
+

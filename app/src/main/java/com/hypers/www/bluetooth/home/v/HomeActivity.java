@@ -38,10 +38,10 @@ public class HomeActivity extends AppCompatActivity implements IHomeView {
         initView();
         HomeComponent homeComponent = DaggerHomeComponent.
                 builder().
-                homeModule(new HomeModule(HomeActivity.this)).
+                homeModule(new HomeModule(this)).
                 build();
         mHomePresent = homeComponent.getHomePresent();
-        mHomePresent.initBle(HomeActivity.this);
+        mHomePresent.initBle();
         initListener();
     }
 
@@ -50,14 +50,14 @@ public class HomeActivity extends AppCompatActivity implements IHomeView {
         mIvAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mHomePresent.changeMode(HomeActivity.this);
+                mHomePresent.changeMode();
             }
         });
 
         mIvShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mHomePresent.share(HomeActivity.this);
+                mHomePresent.share();
             }
         });
     }
@@ -77,7 +77,7 @@ public class HomeActivity extends AppCompatActivity implements IHomeView {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mHomePresent.onActivityResult(HomeActivity.this, requestCode, resultCode, data);
+        mHomePresent.onActivityResult(requestCode, resultCode, data);
     }
 
 
@@ -96,4 +96,6 @@ public class HomeActivity extends AppCompatActivity implements IHomeView {
     public ImageView getIvAvatar() {
         return mIvAvatar;
     }
+
+
 }

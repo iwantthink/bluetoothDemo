@@ -47,7 +47,7 @@ public class LoginModelImpl implements ILoginModel {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                SystemClock.sleep(10000);
+                SystemClock.sleep(1000);
                 if (account.equals("1") && password.equals("1")) {
                     mHandler.sendEmptyMessage(LOGIN_SUCCESS);
                 } else {
