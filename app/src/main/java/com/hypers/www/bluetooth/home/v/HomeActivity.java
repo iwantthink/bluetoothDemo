@@ -97,5 +97,4 @@ public class HomeActivity extends AppCompatActivity implements IHomeView {
         return mIvAvatar;
     }
 
-
 }
