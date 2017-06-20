@@ -46,16 +46,15 @@
             android:name=".home.v.HomeActivity"
             android:screenOrientation="portrait"
             >
-        </activity>
-        <activity
-            android:name=".login.v.LoginActivity"
-            android:screenOrientation="portrait"
-            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+            </intent-filter>        </activity>
+        <activity
+            android:name=".login.v.LoginActivity"
+            android:screenOrientation="portrait"
+            >
         </activity>
         <activity android:name=".registered.RegisteredActivity">
         </activity>
@@ -75,7 +74,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
 
         <activity
             android:name=".apshare.ShareEntryActivity"
