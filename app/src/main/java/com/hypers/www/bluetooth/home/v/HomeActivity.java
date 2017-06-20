@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -15,6 +14,12 @@ import com.hypers.www.bluetooth.home.component.DaggerHomeComponent;
 import com.hypers.www.bluetooth.home.component.HomeComponent;
 import com.hypers.www.bluetooth.home.module.HomeModule;
 import com.hypers.www.bluetooth.home.p.IHomePresent;
+import com.jakewharton.rxbinding2.view.RxView;
+
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 
 public class HomeActivity extends AppCompatActivity implements IHomeView {
 
@@ -46,20 +51,23 @@ public class HomeActivity extends AppCompatActivity implements IHomeView {
     }
 
     private void initListener() {
+        RxView.clicks(mIvAvatar).
+                throttleFirst(1, TimeUnit.SECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(@NonNull Object o) throws Exception {
+                        mHomePresent.changeMode();
+                    }
+                });
 
-        mIvAvatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mHomePresent.changeMode();
-            }
-        });
-
-        mIvShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mHomePresent.share();
-            }
-        });
+        RxView.clicks(mIvShare).
+                throttleFirst(1, TimeUnit.SECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(@NonNull Object o) throws Exception {
+                        mHomePresent.share();
+                    }
+                });
     }
 
     private void initView() {
