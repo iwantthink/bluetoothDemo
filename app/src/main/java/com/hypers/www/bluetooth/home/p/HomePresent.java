@@ -15,6 +15,7 @@ import android.os.ParcelUuid;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.hmt.analytics.HMTAgent;
 import com.hmt.analytics.viewexplosion.ExplosionView;
 import com.hmt.analytics.viewexplosion.factory.FlyawayFactory;
 import com.hypers.www.bluetooth.MockServerCallBack;
@@ -147,8 +148,10 @@ public class HomePresent implements IHomePresent {
     @Override
     public void changeMode() {
         if (sExplosionView.getMode() == ExplosionView.MODE.ANNULUS) {
+            sendHMTAction("open");
             openBle();
         } else {
+            sendHMTAction("close");
             closeBle();
         }
     }
@@ -240,10 +243,11 @@ public class HomePresent implements IHomePresent {
 
     @Override
     public void share() {
-        UMWeb web = new UMWeb("http://www.hypers.com/reno/");
-        web.setTitle("我正在使用Reno");
+        sendHMTShare();
+        UMWeb web = new UMWeb("https://www.hypers.com/reno");
+        web.setTitle("一起来和我玩Reno吧!");
         web.setThumb(new UMImage(mActivity, R.mipmap.logo_pink_mini));
-        web.setDescription("快来下载吧");
+        web.setDescription("Reno是一款近场感应的灯光控制软件,用户可以利用BLE来与灯光进行交互.一起来和我玩Reno吧!");
         new ShareAction(mActivity).withMedia(web)
                 .setDisplayList(SHARE_MEDIA.SINA, SHARE_MEDIA.WEIXIN)
                 .setCallback(new UMShareListener() {
@@ -291,5 +295,19 @@ public class HomePresent implements IHomePresent {
                 }
                 break;
         }
+    }
+
+    @Override
+    public void sendHMTAction(String state) {
+        if (state.equals("open")) {
+            HMTAgent.onAction(mActivity, "open_ble");
+        } else {
+            HMTAgent.onAction(mActivity, "close_ble");
+        }
+    }
+
+    @Override
+    public void sendHMTShare() {
+        HMTAgent.onAction(mActivity, "hmt_share");
     }
 }

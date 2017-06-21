@@ -17,6 +17,7 @@
         android:layout_marginBottom="66dp">
 
         <ImageView
+            android:id="@+id/iv_about"
             android:layout_width="27dp"
             android:layout_height="27dp"
             android:layout_alignParentLeft="true"

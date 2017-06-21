@@ -27,4 +27,8 @@ public interface IHomePresent {
     void share();
 
     void onActivityResult(int requestCode, int resultCode, Intent data);
+
+    void sendHMTAction(String state);
+
+    void sendHMTShare();
 }

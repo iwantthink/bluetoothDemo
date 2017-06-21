@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -26,6 +27,7 @@ public class HomeActivity extends AppCompatActivity implements IHomeView {
     private static final String TAG = HomeActivity.class.getSimpleName();
     private ImageView mIvAvatar;
     private ImageView mIvShare;
+    private ImageView mIvAbout;
     public IHomePresent mHomePresent;
 
     public static void start(Activity context) {
@@ -68,11 +70,22 @@ public class HomeActivity extends AppCompatActivity implements IHomeView {
                         mHomePresent.share();
                     }
                 });
+
+        RxView.clicks(mIvAbout).
+                throttleFirst(1, TimeUnit.SECONDS).
+                subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(@NonNull Object o) throws Exception {
+                        showAbout();
+                    }
+                });
+
     }
 
     private void initView() {
         mIvAvatar = (ImageView) findViewById(R.id.iv_avatar);
         mIvShare = (ImageView) findViewById(R.id.iv_share);
+        mIvAbout = (ImageView) findViewById(R.id.iv_about);
     }
 
     @Override
@@ -103,6 +116,15 @@ public class HomeActivity extends AppCompatActivity implements IHomeView {
     @Override
     public ImageView getIvAvatar() {
         return mIvAvatar;
+    }
+
+    @Override
+    public void showAbout() {
+        AlertDialog dialog = new AlertDialog.Builder(HomeActivity.this).
+                setTitle("关于").
+                setMessage("Reno是一款近场感应的灯光控制软件,用户可以利用BLE来与灯光进行交互.").
+                create();
+        dialog.show();
     }
 
 }
