@@ -6,13 +6,13 @@ android {
 
     aaptOptions.cruncherEnabled = false
     aaptOptions.useNewCruncher = false
-    
+
     defaultConfig {
         applicationId "com.hypers.www.bluetooth"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 2
-        versionName "1.1"
+        versionCode 3
+        versionName "1.2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 

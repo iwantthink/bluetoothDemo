@@ -244,10 +244,10 @@ public class HomePresent implements IHomePresent {
     @Override
     public void share() {
         sendHMTShare();
-        UMWeb web = new UMWeb("https://www.hypers.com/reno");
-        web.setTitle("一起来和我玩Reno吧!");
+        UMWeb web = new UMWeb("https://www.hypers.com/reon");
+        web.setTitle("一起来和我玩Reon吧!");
         web.setThumb(new UMImage(mActivity, R.mipmap.logo_pink_mini));
-        web.setDescription("Reno是一款近场感应的灯光控制软件,用户可以利用BLE来与灯光进行交互.一起来和我玩Reno吧!");
+        web.setDescription("Reon是一款近场感应的灯光控制软件,用户可以利用BLE来与灯光进行交互.一起来和我玩Reon吧!");
         new ShareAction(mActivity).withMedia(web)
                 .setDisplayList(SHARE_MEDIA.SINA, SHARE_MEDIA.WEIXIN)
                 .setCallback(new UMShareListener() {

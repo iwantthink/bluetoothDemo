@@ -122,7 +122,7 @@ public class HomeActivity extends AppCompatActivity implements IHomeView {
     public void showAbout() {
         AlertDialog dialog = new AlertDialog.Builder(HomeActivity.this).
                 setTitle("关于").
-                setMessage("Reno是一款近场感应的灯光控制软件,用户可以利用BLE来与灯光进行交互.").
+                setMessage("Reon是一款近场感应的灯光控制软件,用户可以利用BLE来与灯光进行交互.").
                 create();
         dialog.show();
     }
