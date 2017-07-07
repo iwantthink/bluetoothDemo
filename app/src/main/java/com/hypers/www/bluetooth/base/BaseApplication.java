@@ -21,8 +21,8 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         HMTAgent.Initialize(this);
+        HMTAgent.onError(this);
         UMShareAPI.get(this);
-
     }
 
 }
